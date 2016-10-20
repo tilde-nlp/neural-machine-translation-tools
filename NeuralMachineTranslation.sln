@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProcessNMTAlignments", "ProcessNMTAlignments\ProcessNMTAlignments.csproj", "{E67D3004-92FF-4E4C-9D54-DA76EBCB55B1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReplaceRareWordsWithPOSTags", "ReplaceRareWordsWithPOSTags\ReplaceRareWordsWithPOSTags.csproj", "{3BD7C0EC-EC2B-46D0-9E16-EB4298EE8DDB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttentionMatrixToAlignment", "AttentionMatrixToAlignment\AttentionMatrixToAlignment.csproj", "{9287FE4E-067F-43E4-83A6-021B45A7AE9A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,8 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F3943384-2D88-451C-966E-584099635308}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F3943384-2D88-451C-966E-584099635308}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E67D3004-92FF-4E4C-9D54-DA76EBCB55B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E67D3004-92FF-4E4C-9D54-DA76EBCB55B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E67D3004-92FF-4E4C-9D54-DA76EBCB55B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -23,6 +23,10 @@ Global
 		{3BD7C0EC-EC2B-46D0-9E16-EB4298EE8DDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BD7C0EC-EC2B-46D0-9E16-EB4298EE8DDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BD7C0EC-EC2B-46D0-9E16-EB4298EE8DDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9287FE4E-067F-43E4-83A6-021B45A7AE9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9287FE4E-067F-43E4-83A6-021B45A7AE9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9287FE4E-067F-43E4-83A6-021B45A7AE9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9287FE4E-067F-43E4-83A6-021B45A7AE9A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
