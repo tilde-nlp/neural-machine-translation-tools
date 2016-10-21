@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
+﻿using MathNet.Numerics.LinearAlgebra;
 using ProcessNMTAlignments;
-using MathNet.Numerics.LinearAlgebra;
+using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
+using System.Linq;
 
 namespace AttentionMatrixToAlignment
 {
@@ -22,19 +20,26 @@ namespace AttentionMatrixToAlignment
             {
                 var inputParts = line.Split(new string[] { " ||| " }, StringSplitOptions.None);
                 var alignmentMatrixLines = inputParts[1].Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
-                alignmentMatrixLines = alignmentMatrixLines.Select(theLine => theLine.Trim(new char[] { ' ', '(', ')' })).ToArray();
-                Matrix<double> alignmentMatrix = Matrix<double>.Build.Dense(alignmentMatrixLines.Length, alignmentMatrixLines[0].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Length);
-                for(int rowIndex = 0; rowIndex< alignmentMatrixLines.Length; rowIndex++){
+                alignmentMatrixLines = alignmentMatrixLines
+                    .Select(theLine => theLine.Trim(new char[] { ' ', '(', ')' }))
+                    .Where(item=>item != string.Empty)
+                    .ToArray();
+                // ignore last line that corresponds to EOS
+                int matrixLinesCount = alignmentMatrixLines.Length; 
+                //ignore last column that corresponds to EOS
+                int matrixColumnCount = alignmentMatrixLines[0].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Length;
+                Matrix<double> alignmentMatrix = Matrix<double>.Build.Dense(matrixLinesCount, matrixColumnCount);
+                for(int rowIndex = 0; rowIndex< matrixLinesCount; rowIndex++){
                     var values = alignmentMatrixLines[rowIndex].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                    for(int columnIndex = 0; columnIndex < values.Length; columnIndex++){
+                    for(int columnIndex = 0; columnIndex < matrixColumnCount; columnIndex++){
                         alignmentMatrix[rowIndex, columnIndex] = double.Parse(values[columnIndex], CultureInfo.InvariantCulture);
                     }
                 }
 
-                var fakeSourceTokens = Enumerable.Repeat<string>("", alignmentMatrix.ColumnCount - 1).ToArray();
-                var fakeTargetTokens = Enumerable.Repeat<string>("", alignmentMatrix.RowCount - 1).ToArray();
+                var fakeSourceTokens = Enumerable.Repeat<string>("", matrixColumnCount - 1).ToArray();
+                var fakeTargetTokens = Enumerable.Repeat<string>("", matrixLinesCount - 1).ToArray();
 
-                var alignments = new NMTAlignmentProcessor().GetMaxAlignments(fakeSourceTokens, fakeTargetTokens , alignmentMatrix);
+                var alignments = new NMTAlignmentProcessor().GetMaxAlignments(fakeSourceTokens, fakeTargetTokens, alignmentMatrix);
                 List<Tuple<int, int>> flatAlignments = new List<Tuple<int, int>>();
                 foreach (var alignment in alignments)
                 {
