@@ -154,7 +154,22 @@ namespace ProcessNMTAlignments
                 }
             }
 
-            // 4) add non-linked source words to the max target words if the target words are not linked to anything!
+            //TEST THIS!!!
+            // 4) add remaining non-linked target words to max source words!
+            for (int i = 0; i < res.Count; i++)
+            {
+                if (res[i].sourceIdList.Count < 1)
+                {
+                    if (!coveredSourceIdx.Contains(targetMaxAlignments[i]))
+                    {
+                        coveredSourceIdx.Add(targetMaxAlignments[i]);
+                    }
+                    res[i].sourceIdList.Add(targetMaxAlignments[i]);
+                    res[i].sourceStrings.Add(sourceSentenceTokens[targetMaxAlignments[i]]);
+                }
+            }
+
+            // 5) add non-linked source words to the max target words if the target words are not linked to anything!
             for (int i = 0; i < sourceSentenceTokens.Length; i++)
             {
                 if (!coveredSourceIdx.Contains(i))
@@ -169,7 +184,7 @@ namespace ProcessNMTAlignments
                 }
             }
             
-            // 5) add source words to words that are translated and have just one source word linked;
+            // 6) add source words to words that are translated and have just one source word linked;
             for (int i = 0; i < res.Count; i++)
             {
                 if (res[i].sourceIdList.Count == 1)
@@ -210,7 +225,7 @@ namespace ProcessNMTAlignments
 
             if (addLowConfNonTranslatedWords)
             {
-                // 6) add non-translated words to the maximum.
+                // 7) add non-translated words to the maximum.
                 for (int i = 0; i < sourceSentenceTokens.Length; i++)
                 {
                     if (!coveredSourceIdx.Contains(i))
