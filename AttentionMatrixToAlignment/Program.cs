@@ -36,24 +36,36 @@ namespace AttentionMatrixToAlignment
                     }
                 }
 
-                var fakeSourceTokens = Enumerable.Repeat<string>("", matrixColumnCount - 1).ToArray();
-                var fakeTargetTokens = Enumerable.Repeat<string>("", matrixLinesCount - 1).ToArray();
+                string processedAlignment = AlignmentByMarcis(alignmentMatrix);
+                //string processedAlignment = AlignmentByToms(alignmentMatrix);
 
-                var alignments = new NMTAlignmentProcessor().GetMaxAlignments(fakeSourceTokens, fakeTargetTokens, alignmentMatrix, true);
-                List<Tuple<int, int>> flatAlignments = new List<Tuple<int, int>>();
-                foreach (var alignment in alignments)
+                Console.WriteLine(inputParts[0] + " ||| " + processedAlignment);
+            }
+        }
+
+        static string AlignmentByToms(Matrix<double> alignmentMatrix)
+        {
+            return AlignmentConverter.GetAlignment(alignmentMatrix);
+        }
+
+        static string AlignmentByMarcis(Matrix<double> alignmentMatrix)
+        {
+            var fakeSourceTokens = Enumerable.Repeat<string>("", alignmentMatrix.ColumnCount - 1).ToArray();
+            var fakeTargetTokens = Enumerable.Repeat<string>("", alignmentMatrix.RowCount - 1).ToArray();
+
+            var alignments = new NMTAlignmentProcessor().GetMaxAlignments(fakeSourceTokens, fakeTargetTokens, alignmentMatrix, true);
+            List<Tuple<int, int>> flatAlignments = new List<Tuple<int, int>>();
+            foreach (var alignment in alignments)
+            {
+                foreach (var targetId in alignment.targetIdList)
                 {
-                    foreach (var targetId in alignment.targetIdList)
+                    foreach (var sourceId in alignment.sourceIdList)
                     {
-                        foreach (var sourceId in alignment.sourceIdList)
-                        {
-                            flatAlignments.Add(new Tuple<int, int>(sourceId, targetId));
-                        }
+                        flatAlignments.Add(new Tuple<int, int>(sourceId, targetId));
                     }
                 }
-                
-                Console.WriteLine(inputParts[0] + " ||| " + string.Join(" ", flatAlignments.OrderBy(item=>item.Item2).ThenBy(item=>item.Item1).Select(item => item.Item1.ToString() + "-" + item.Item2.ToString())));
             }
+            return string.Join(" ", flatAlignments.OrderBy(item => item.Item2).ThenBy(item => item.Item1).Select(item => item.Item1.ToString() + "-" + item.Item2.ToString()));
         }
     }
 }
