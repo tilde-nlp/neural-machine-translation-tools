@@ -112,7 +112,7 @@ namespace ProcessNMTAlignments
                     //Perform leftward search for additional source words:
                     for (int idx = currSourceIdx - 1; idx >= 0; idx--)
                     {
-                        if (sourceMaxAlignments[idx] == i && !srcIdxThatAreMaxForTrg.ContainsKey(idx) && !coveredSourceIdx.Contains(idx))
+                        if (sourceMaxAlignments[idx] == i && !srcIdxThatAreMaxForTrg.ContainsKey(idx) && !coveredSourceIdx.Contains(idx) && (idx == currSourceIdx - 1 || alignmentMatrix[i, idx] >= 0.1))
                         {
                             res[i].sourceIdList.Insert(0, idx);
                             res[i].sourceStrings.Insert(0, sourceSentenceTokens[idx]);
@@ -126,7 +126,7 @@ namespace ProcessNMTAlignments
                     //Perform rightward search for additional source words:
                     for (int idx = currSourceIdx + 1; idx < sourceSentenceTokens.Length; idx++)
                     {
-                        if (sourceMaxAlignments[idx] == i && !srcIdxThatAreMaxForTrg.ContainsKey(idx) && !coveredSourceIdx.Contains(idx))
+                        if (sourceMaxAlignments[idx] == i && !srcIdxThatAreMaxForTrg.ContainsKey(idx) && !coveredSourceIdx.Contains(idx) && (idx==currSourceIdx + 1||alignmentMatrix[i,idx]>=0.1))
                         {
                             res[i].sourceIdList.Add(idx);
                             res[i].sourceStrings.Add(sourceSentenceTokens[idx]);
@@ -158,7 +158,7 @@ namespace ProcessNMTAlignments
             // 4) add remaining non-linked target words to max source words!
             for (int i = 0; i < res.Count; i++)
             {
-                if (res[i].sourceIdList.Count < 1)
+                if (res[i].sourceIdList.Count < 1 && alignmentMatrix[i, targetMaxAlignments[i]] >= 0.1)
                 {
                     if (!coveredSourceIdx.Contains(targetMaxAlignments[i]))
                     {
@@ -193,7 +193,7 @@ namespace ProcessNMTAlignments
                     //Perform leftward search for additional source words:
                     for (int idx = currSourceIdx - 1; idx >= 0; idx--)
                     {
-                        if (sourceMaxAlignments[idx] == i && !srcIdxThatAreMaxForTrg.ContainsKey(idx) && !coveredSourceIdx.Contains(idx))
+                        if (sourceMaxAlignments[idx] == i && !srcIdxThatAreMaxForTrg.ContainsKey(idx) && !coveredSourceIdx.Contains(idx) && alignmentMatrix[i, idx] >= 0.1)
                         {
                             res[i].sourceIdList.Insert(0, idx);
                             res[i].sourceStrings.Insert(0, sourceSentenceTokens[idx]);
@@ -208,7 +208,7 @@ namespace ProcessNMTAlignments
                     //Perform rightward search for additional source words:
                     for (int idx = currSourceIdx + 1; idx < sourceSentenceTokens.Length; idx++)
                     {
-                        if (sourceMaxAlignments[idx] == i && !srcIdxThatAreMaxForTrg.ContainsKey(idx) && !coveredSourceIdx.Contains(idx))
+                        if (sourceMaxAlignments[idx] == i && !srcIdxThatAreMaxForTrg.ContainsKey(idx) && !coveredSourceIdx.Contains(idx) && alignmentMatrix[i, idx] >= 0.1)
                         {
                             res[i].sourceIdList.Add(idx);
                             res[i].sourceStrings.Add(sourceSentenceTokens[idx]);

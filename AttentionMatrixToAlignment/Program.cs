@@ -39,7 +39,7 @@ namespace AttentionMatrixToAlignment
                 var fakeSourceTokens = Enumerable.Repeat<string>("", matrixColumnCount - 1).ToArray();
                 var fakeTargetTokens = Enumerable.Repeat<string>("", matrixLinesCount - 1).ToArray();
 
-                var alignments = new NMTAlignmentProcessor().GetMaxAlignments(fakeSourceTokens, fakeTargetTokens, alignmentMatrix);
+                var alignments = new NMTAlignmentProcessor().GetMaxAlignments(fakeSourceTokens, fakeTargetTokens, alignmentMatrix, true);
                 List<Tuple<int, int>> flatAlignments = new List<Tuple<int, int>>();
                 foreach (var alignment in alignments)
                 {
